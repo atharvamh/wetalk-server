@@ -48,6 +48,7 @@ app.set("io", io);
 
 io.on("connection",(socket) => {
 
+    // emit acts an event emitter, (eventname, emitData);
     socket.emit("connected", { socketId : socket.id });
 
     socket.on("join-room", (data) => {
@@ -63,14 +64,22 @@ io.on("connection",(socket) => {
             message : data.message,
             timestamp : data.timestamp
         });
-    })
+    });
 
-    socket.on("logout", (data) => {
+    socket.on("user-logout", (data) => {
         io.emit("logout-success", { 
             userId : data.userId,
             event: "LOGOUT",
             timestamp: Date.now()
         });
+    })
+
+    socket.on("user-login", (data) => {
+        io.emit("login-success", {
+            userId : data.userId,
+            event: "LOGIN",
+            timestamp: Date.now()
+        })
     })
 })
 
