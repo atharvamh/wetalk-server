@@ -7,7 +7,7 @@ router.get("/:roomId/conversations", verifyToken, async(req, res) => {
     const roomId = req.params["roomId"];
 
     try {
-        const existingRoom = await Room.findOne({ $or : [ { roomId : roomId }, { alternativeRoomId : roomId } ]});
+        const existingRoom = await Room.findOne({ _id : roomId });
     
         return res.status(200).json({
             isSuccess : true,
@@ -22,7 +22,6 @@ router.get("/:roomId/conversations", verifyToken, async(req, res) => {
 
 router.post("/savemessage", verifyToken, async(req, res) => {
     const { roomId, sender, timestamp, message } = req.body;
-    const io = req.app.get("io");
 
     const updateObj = {
         $push: {
@@ -35,11 +34,7 @@ router.post("/savemessage", verifyToken, async(req, res) => {
     };
     
     try {
-        const status = await Room.findOneAndUpdate({ 
-            $or : [ { roomId : roomId }, { alternativeRoomId : roomId } ]}, 
-            updateObj,
-            {new: true}
-        );
+        const status = await Room.findOneAndUpdate({ _id : roomId }, updateObj, {new: true});
 
         if(status == null)
             throw new Error("Error saving message");

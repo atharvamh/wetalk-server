@@ -145,14 +145,13 @@ router.post("/accept", verifyToken, async(req, res) => {
         const newUserAconn = new Connection({ userId : currentUserId, friends : [fromId] });
         const newUserBconn = new Connection({ userId : fromId, friends : [currentUserId] });
 
-        const tempRoomId = `${currentUserId}-${fromId}`;
-        const tempAlternativeRoomId = `${fromId}-${currentUserId}`;
-        const existingRoom = await Room.findOne({ $or : [ { roomId : tempRoomId }, { alternativeRoomId : tempRoomId } ]});
+        const existingRoom = await Room.findOne({ 
+            "members.userId": { $all: [ fromId, currentUserId ]}
+        });
+
         const currentUser = await User.findOne({ _id : currentUserId });
 
-        const newRoom = new Room({ 
-            roomId : tempRoomId, 
-            alternativeRoomId : tempAlternativeRoomId, 
+        const newRoom = new Room({
             members: [
                 { firstname : fromFirstName, lastname : fromLastName, userId : fromId },
                 { firstname : currentUser?.firstname, lastname : currentUser?.lastname, userId : currentUserId }

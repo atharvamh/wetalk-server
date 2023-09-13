@@ -166,7 +166,7 @@ router.get("/:userId/rooms", verifyToken, async(req, res) => {
                     userId: { $eq: userId }
                 }
             } 
-        }).select({ isGroupChat : 1, members : 1, metadata : 1, roomId : 1, alternativeRoomId : 1 });
+        }).select({ isGroupChat : 1, members : 1, metadata : 1 });
 
         return res.status(200).json({ 
             isSuccess : true, 

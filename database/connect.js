@@ -5,8 +5,9 @@ async function connectToDatabase(){
     await mongoose.connect(connectionURI, {
         useNewUrlParser: true,
         useUnifiedTopology: true
-    }).then(() => console.log("Successfully connected to deployed mongoDB"))
-    .catch((error) => {
+    }).then((response) =>
+        console.log(`MongoDB connected at host : ${response.connections[0].host}`)
+    ).catch((error) => {
         console.log("Failed connecting to database.");
         console.error(error);
     });

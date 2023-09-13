@@ -57,12 +57,11 @@ io.on("connection",(socket) => {
 
     // on acts as an event listener, (eventName, (callback) => {});
     socket.on("send-message-to-room", (data) => {
-        const idParts = data.room.split("-");
-        
-        io.to(data.room).emit("user-message", { 
-            sender : idParts[0], 
+        io.to(data.roomId).emit("user-message", {
+            sender : data.sender, 
             message : data.message,
-            timestamp : data.timestamp
+            timestamp : data.timestamp,
+            roomId : data.roomId
         });
     });
 
@@ -84,6 +83,6 @@ io.on("connection",(socket) => {
 })
 
 httpServer.listen(PORT, () => {
-    console.log(`Server started on port : ${PORT}`);
+    console.log(`\nServer started on port : ${PORT}\n`);
     connectToDatabase();
 });
