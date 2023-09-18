@@ -13,7 +13,7 @@ const user = require("./routes/user");
 const usernetwork = require("./routes/usernetwork");
 const room = require("./routes/room");
 
-const allowedOrigins = ["http://localhost:5173"];
+const allowedOrigins = ["https://wetalk-jmhc5i3rva-el.a.run.app/","http://localhost:5173"];
 
 // to handle parsing for different request body formats
 app.use(express.urlencoded({ extended : false }));
